@@ -48,6 +48,18 @@ abstract class Calc
   }
 }
 
+class Dec extends Calc {
+  function __construct()
+  {
+    echo 'dec: ';
+  }
+
+  public function convert()
+  {
+    return base_convert($this->result,10,10);
+  }
+}
+
 class Hex extends Calc {
   function __construct()
   {
@@ -72,10 +84,33 @@ class Binary extends Calc {
   }
 }
 
-$calc = new Hex();
-$calc->multiply(7, 15);
+$param = [ 7, 15];
+
+if ( isset( $_GET['param_1'] ) && is_numeric( $_GET['param_1'] ) )
+{
+  $param[0] = $_GET['param_1'];
+}
+if ( isset( $_GET['param_2'] ) && is_numeric( $_GET['param_2'] ) )
+{
+  $param[1] = $_GET['param_2'];
+}
+
+echo "Params:"."<br>";
+echo 1 . ':' . $param[0] . "<br>";
+echo 2 . ':' . $param[1] . "<br>";
+echo "==============="."<br>";
+
+$calc = new Dec();
+$calc->multiply( $param[0], $param[1]);
 echo $calc->result();
+unset($calc);
+
+$calc = new Hex();
+$calc->multiply( $param[0], $param[1]);
+echo $calc->result();
+unset($calc);
 
 $calc = new Binary();
-$calc->multiply(7, 15);
+$calc->multiply( $param[0], $param[1]);
 echo $calc->result();
+unset($calc);
