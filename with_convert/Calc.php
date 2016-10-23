@@ -3,6 +3,12 @@
 abstract class Calc
 {
   private $result;
+  private $action;
+
+  const ACTION_PLUS = 'Plus:';
+  const ACTION_MINUS = 'Minus:';
+  const ACTION_MULTIPLY = 'Multiply:';
+  const ACTION_DIVIDE = 'Divide:';
 
   public function __get($property)
   {
@@ -17,16 +23,19 @@ abstract class Calc
   public function plus($args1, $args2)
   {
     $this->result = $args1 + $args2;
+    $this->action = self::ACTION_PLUS;
   }
 
   public function minus($args1, $args2)
   {
-    $this->result = $args1 + $args2;
+    $this->result = $args1 - $args2;
+    $this->action = self::ACTION_MINUS;
   }
 
   public function multiply($args1, $args2)
   {
     $this->result = $args1 * $args2;
+    $this->action = self::ACTION_MULTIPLY;
   }
 
   public function divide($args1, $args2)
@@ -35,23 +44,24 @@ abstract class Calc
       throw new Exception('Деление на ноль');
     }
     $this->result = $args1 / $args2;
+    $this->action = self::ACTION_DIVIDE;
   }
 
   public function result()
   {
-    echo $this->convert();
+    echo $this->convert() . "<br>";
   }
 
   function __destruct()
   {
-    echo "<br>"."==============="."<br>";
+    echo "==============="."<br>";
   }
 }
 
 class Dec extends Calc {
   function __construct()
   {
-    echo 'dec: ';
+    echo 'dec: '."<br>";
   }
 
   public function convert()
@@ -63,7 +73,7 @@ class Dec extends Calc {
 class Hex extends Calc {
   function __construct()
   {
-    echo 'hex: ';
+    echo 'hex: '."<br>";
   }
 
   public function convert()
@@ -75,7 +85,7 @@ class Hex extends Calc {
 class Binary extends Calc {
   function __construct()
   {
-    echo 'binary: ';
+    echo 'binary: '."<br>";
   }
 
   public function convert()
@@ -100,17 +110,24 @@ echo 1 . ':' . $param[0] . "<br>";
 echo 2 . ':' . $param[1] . "<br>";
 echo "==============="."<br>";
 
-$calc = new Dec();
-$calc->multiply( $param[0], $param[1]);
-echo $calc->result();
-unset($calc);
+foreach ( [ 'Dec', 'Hex', 'Binary' ] as $class_name ) {
+  $calc = new $class_name();
 
-$calc = new Hex();
-$calc->multiply( $param[0], $param[1]);
-echo $calc->result();
-unset($calc);
+  $calc->plus( $param[0], $param[1]);
+  echo $calc->action;
+  echo $calc->result();
 
-$calc = new Binary();
-$calc->multiply( $param[0], $param[1]);
-echo $calc->result();
-unset($calc);
+  $calc->minus( $param[0], $param[1]);
+  echo $calc->action;
+  echo $calc->result();
+
+  $calc->multiply( $param[0], $param[1]);
+  echo $calc->action;
+  echo $calc->result();
+
+  $calc->divide( $param[0], $param[1]);
+  echo $calc->action;
+  echo $calc->result();
+
+  unset($calc);
+}
