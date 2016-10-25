@@ -61,7 +61,7 @@ abstract class Calc
 class Dec extends Calc {
   function __construct()
   {
-    echo 'dec: '."<br>";
+    echo __CLASS__ . ': ' . "<br>";
   }
 
   public function convert()
@@ -73,7 +73,7 @@ class Dec extends Calc {
 class Hex extends Calc {
   function __construct()
   {
-    echo 'hex: '."<br>";
+    echo __CLASS__ . ': ' . "<br>";
   }
 
   public function convert()
@@ -85,7 +85,7 @@ class Hex extends Calc {
 class Binary extends Calc {
   function __construct()
   {
-    echo 'binary: '."<br>";
+    echo __CLASS__ . ': ' . "<br>";
   }
 
   public function convert()
